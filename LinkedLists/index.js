@@ -40,7 +40,7 @@ class LinkedList {
     this.length++;
   }
   insert(passedIndex, value) {
-    if (passedIndex < 0 || passedIndex > this.length - 1) {
+    if (passedIndex < 0 || passedIndex >= this.length) {
       this.append(value);
     } else {
       let previousNode;
@@ -59,6 +59,23 @@ class LinkedList {
       this.length++;
     }
   }
+  remove(passedIndex) {
+    if (passedIndex < 0 || passedIndex >= this.length) {
+      return;
+    }
+    let leaderNode;
+    let currentNode;
+    currentNode = this.head;
+    for (let i = 0; i < passedIndex; i++) {
+      if (passedIndex - 1 === 1) {
+        leaderNode = currentNode;
+      }
+      currentNode = currentNode.next;
+    }
+    const restOfList = currentNode.next;
+    leaderNode.next = restOfList;
+    this.length--;
+  }
 }
 
 let myLinkedList = new LinkedList(10);
@@ -66,4 +83,5 @@ myLinkedList.append(5);
 myLinkedList.append(16);
 myLinkedList.prepend(40);
 myLinkedList.insert(3, 90);
+myLinkedList.remove(2);
 console.log(myLinkedList);
