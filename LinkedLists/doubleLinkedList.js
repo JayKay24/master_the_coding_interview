@@ -1,22 +1,24 @@
-export class Node {
-  constructor(item) {
-    this.value = item;
+class DoublyNode {
+  constructor(value) {
+    this.value = value;
+    this.previous = null;
     this.next = null;
   }
 }
 
-export class LinkedList {
+class DoublyLinkedList {
   constructor(value) {
-    this.head = new Node(value);
-    this.tail = this.head;
+    this.head = new DoublyNode(value);
+    this.tail = this.head ;
     this.length = 1;
   }
   append(value) {
-    let node = new Node(value);
+    let node = new DoublyNode(value);
     
     if (this.head.next === null) {
-      this.head.next = node;
-      this.tail = this.head.next;
+      node.previous = this.tail;
+      this.tail.next = node;
+      this.tail = node;
       this.length++;
     } else {
       let currentNode;
@@ -24,6 +26,7 @@ export class LinkedList {
       while (currentNode.next !== null) {
         currentNode = currentNode.next;
       }
+      node.previous = currentNode;
       currentNode.next = node;
       this.length++;
       this.tail = currentNode.next;
@@ -31,8 +34,9 @@ export class LinkedList {
   }
   prepend(value) {
     const currentHead = this.head;
-    const newNode = new Node(value);
+    const newNode = new DoublyNode(value);
     newNode.next = currentHead;
+    currentHead.previous = newNode;
     this.head = newNode;
     this.length++;
   }
@@ -50,9 +54,10 @@ export class LinkedList {
         currentNode = currentNode.next;
       }
       const restOfList = previousNode.next;
-      const newNode = new Node(value);
+      const newNode = new DoublyNode(value);
       newNode.next = restOfList;
       previousNode.next = newNode;
+      newNode.previous = previousNode;
       this.length++;
     }
   }
@@ -71,21 +76,12 @@ export class LinkedList {
     }
     const restOfList = currentNode.next;
     leaderNode.next = restOfList;
+    restOfList.previous = leaderNode;
     this.length--;
-  }
-  reverse() {
-    let currentNode;
-    let newNode;
-    currentNode = this.head;
-    while (currentNode !== null) {
-      currentNode = currentNode.next;
-      newNode = currentNode.next;
-
-    }
   }
 }
 
-let myLinkedList = new LinkedList(10);
+let myLinkedList = new DoublyLinkedList(10);
 myLinkedList.append(5);
 myLinkedList.append(16);
 myLinkedList.prepend(40);
